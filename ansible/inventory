@@ -1,0 +1,9 @@
+[build]
+
+[prod]
+
+
+[all:vars]
+ansible_user = ubuntu
+ansible_ssh_extra_args = '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+ansible_python_interpreter = /usr/bin/python3

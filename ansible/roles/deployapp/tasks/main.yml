@@ -1,0 +1,23 @@
+---
+- name: Install packages
+  apt:
+    name:
+      - docker.io
+      - python3-docker
+    state: present
+    update_cache: yes
+
+- name: Enable and start docker
+  systemd:
+    enabled: yes
+    state: restarted
+    name: docker.service
+
+- name: Start boxfuse container
+  docker_container:
+    name: boxfuse
+    image: "phaetonich/boxfuse:latest"
+    state: started
+    pull: true
+    ports:
+      - "8080:8080"

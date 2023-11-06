@@ -1,0 +1,41 @@
+---
+- name: Install packages
+  apt:
+    name:
+      - git
+      - maven
+      - docker.io
+      - python3-docker
+    state: present
+    update_cache: yes
+
+- name: Enable and start docker
+  systemd:
+    enabled: yes
+    state: restarted
+    name: docker.service
+
+- name: Get Dockerfile from github
+  git:
+    repo: "https://github.com/phaeton87/docker_lesson.git"
+    dest: "/tmp/docker/"
+
+- name: Build Docker image
+  docker_image:
+    name: phaetonich/boxfuse
+    tag: latest
+    dockerfile: /tmp/docker/Dockerfile
+    path: /tmp/docker
+
+- name: Authorization in dockerhub
+  docker_login:
+    username: "{{ docker_user }}"
+    password: "{{ docker_pass }}"
+    email: "{{ docker_email }}"
+
+- name: Push docker image to dockerhub
+  docker_image:
+    path: "/tmp/docker"
+    name: "phaetonich/boxfuse"
+    tag: "latest"
+    push: yes

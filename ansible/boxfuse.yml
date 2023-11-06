@@ -1,0 +1,16 @@
+---
+- hosts: build
+  become: true
+  roles:
+    - buildapp
+  gather_facts: false
+  vars:
+    docker_user: 
+    docker_pass: 
+    docker_email: 
+
+- hosts: prod
+  become: true
+  roles:
+    - deployapp
+  gather_facts: false
